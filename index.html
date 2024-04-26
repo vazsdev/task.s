@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task.s</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      background-color: white;
+    }
+
+    header {
+      width: 100%;
+      text-align: left;
+      background-color: #1f1f1f;
+      border: 1px solid black;
+    }
+    #h1_header {
+      text-align: left;
+      margin-left: 20px;
+      color: white;
+      font-family: "JetBrains Mono";
+    }
+
+    .add_task {
+      width: 60%;
+      min-height: 400px;
+      max-width: 900px;
+      background-color: white;
+      margin: 10% auto 10% auto;
+      border: 2px solid #1f1f1f;
+      border-radius: 10px;
+    }
+    .add_task h1 {
+      margin: 5%;
+      font-family: "JetBrains Mono";
+      font-size: 20px;
+      background-color: #1f1f1f;
+      border-radius: 5px;
+      padding: 10px 15px;
+      color: white;
+    }
+    .add_task input {
+      margin: 5%;
+      width: 90%;
+      border: 2px solid #303030;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: white;
+      color: green;
+      font-family: "JetBrains Mono";
+    }
+    .add_task input:hover {
+      border: 2px solid green;
+    }
+    .add_task textarea {
+      margin: 5%;
+      max-width: 90%;
+      min-width: 90%;
+      min-height: 100px;
+      border: 2px solid #303030;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: white;
+      color: black;
+      font-family: "JetBrains Mono";
+    }
+    .add_task textarea:hover {
+      border: 2px solid green;
+    }
+    .add_task select {
+      margin: 5%;
+      width: 90%;
+      min-height: 20px;
+      border: 2px solid #303030;
+      border-radius: 5px;
+      padding: 5px 10px;
+      background-color: white;
+      color: black;
+      font-family: "JetBrains Mono";
+    }
+    .add_task button {
+      display: block;
+      width: 100px;
+      padding: 15px 20px;
+      border: 2px solid green;
+      border-radius: 10px;
+      background-color: green;
+      color: white;
+      text-align: center;
+      margin: 5% auto 5% auto;
+    }
+    .add_task button:hover {
+      background-color: rgb(0, 92, 0);
+      border: 2px solid rgb(0, 92, 0);
+      cursor: pointer;
+    }
+
+    .add_task select {
+      margin-top: -50px;
+    }
+
+    .task_view {
+      display: grid;
+      background-color: white;
+      margin: 2% auto 2% auto;
+      padding: 15px;
+      grid-template-columns: repeat(2, 1fr); /* Divide a largura em 4 colunas iguais */
+      gap: 10px; /* Espaçamento entre as colunas */
+      border: 2px solid transparent;
+      border-radius: 10px;
+      width: 900px;
+    }
+    .task_view_append {
+      background-color: green;
+      min-width: 400px;
+      min-height: 400px;
+    }
+    .task_view h1 {
+      font-family: "JetBrains Mono";
+      color: white;
+      padding: 5px 15px;
+      margin: 20px 0 0 0;
+    }
+    #button_delete_all_tasks {
+      width: 170px;
+      height: 30px;
+      padding: 5px 10px;
+      margin: -35px 10px 0 auto;
+      border: 2px solid rgb(219, 0, 0);
+      border-radius: 10px;
+      background-color: rgb(219, 0, 0);
+      color: white;
+      cursor: pointer;
+    }
+    #button_delete_all_tasks:hover {
+      border: 2px solid rgb(194, 0, 0);
+      background-color: rgb(194, 0, 0);
+    }
+
+    .task_view button {
+      display: block;
+      width: 100px;
+      height: 30px;
+      padding: 5px 10px;
+      border: 2px solid rgb(219, 0, 0);
+      border-radius: 10px;
+      background-color: rgb(219, 0, 0);
+      color: white;
+      cursor: pointer;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  
+  <header>
+    <h1 id="h1_header">Task.s</h1>
+  </header>
+  <div class="container">
+    <div class="add_task">
+      <h1>Adicionar Uma Tarefa</h1>
+      <h1 style="background-color: transparent; color: #1f1f1f; margin-bottom: -40px;">Nome da tarefa</h1>
+      <input type="text" name="name_task" id="name_task" placeholder="Nome da tarefa...">
+      <h1 style="background-color: transparent; color: #1f1f1f; margin-bottom: -40px; margin-top: -10px;">Descrição da tarefa</h1>
+      <textarea name="desc_task" id="desc_task" placeholder="Descrição..."></textarea>
+      <h1 style="background-color: transparent; color: #1f1f1f; margin-top: -20px; margin-bottom: 10px;">Tipo de urgência</h1>
+      <select name="lista_tipo_tarefa" id="lista_tipo_tarefa">
+        <option value="none">Escolha o tipo de tarefa</option>
+        <option value="urgente">Urgente</option>
+        <option value="n_t_urgente">Não tão urgente</option>
+        <option value="p_urgente">Pouco urgente</option>
+        <option value="n_urgente">Não urgente</option>
+      </select>
+      <button type="button" onclick="salvarTask()">Salvar</button>
+    </div>
+
+    <div class="task_view">
+      <div style="grid-row: 1; /* Vai ocupar a primeira linha */ grid-column: 1 / span 2; /* Vai ocupar a primeira coluna */ background-color: #1f1f1f;border-radius: 10px 10px 0 0; height: 100px;">
+        <h1>Tarefas</h1><button id="button_delete_all_tasks" onclick="clearTasks()">Excluir Todas Tarefas</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    function salvarTask(task) {
+      var task = {
+      name_task: document.querySelector("#name_task").value,
+      desc_task: document.querySelector("#desc_task").value,
+      tipo_task: document.querySelector("#lista_tipo_tarefa").value
+      }
+
+        switch (task.tipo_task) {
+          case 'none':
+            alert('Escolha um tipo de tarefa válido.')
+            break
+          case 'urgente':
+            task.tipo_task = 'Urgente'
+            localTasksSave()
+            break
+          case 'n_t_urgente':
+            task.tipo_task = 'Não tão urgente'
+            localTasksSave()
+            break
+          case 'p_urgente':
+            task.tipo_task = 'Pouco urgente'
+            localTasksSave()
+            break
+          case 'n_urgente':
+            task.tipo_task = 'Não urgente'
+            localTasksSave()
+            break
+          case 'default':
+            null
+            break
+        }
+
+        function localTasksSave() {
+          // Verifica se já há tarefas armazenadas
+          var tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+          // Adiciona a nova tarefa à lista de tarefas
+          tasks.push(task);
+
+          // Salva a lista atualizada no armazenamento local
+          localStorage.setItem('tasks', JSON.stringify(tasks));
+          window.location.reload()
+        }
+    }
+
+    function displayTasks() {
+      var task_view = document.querySelector(".task_view")
+      
+      // Obtém a lista de tarefas armazenadas no localStorage
+      var tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      
+      // Itera sobre a lista de tarefas e cria elementos HTML para cada uma delas
+      tasks.forEach(function(task, index) {
+        // Cria um elemento <div> para exibir a tarefa
+        var taskNAME = document.createElement('div')
+        var taskDESC = document.createElement('div')
+        var taskTIPO = document.createElement('div')
+        var taskDELETE = document.createElement('button')
+
+        taskDELETE.addEventListener('click', function() {
+          // Remove o elemento de tarefa específico do DOM quando clicado
+          task_view.removeChild(taskNAME); // Remova taskNAME em vez de task_view
+          // Remove a tarefa específica do array de tarefas
+          tasks.splice(index, 1);
+          // Atualiza o localStorage sem a tarefa excluída
+          localStorage.setItem('tasks', JSON.stringify(tasks));
+          window.location.reload()
+        });
+
+
+        taskNAME.textContent = task.name_task
+        taskDESC.textContent = task.desc_task
+        taskTIPO.textContent = task.tipo_task
+
+        taskNAME.style.backgroundColor = '#a0a0a0'
+        taskNAME.style.minWidth = '400px'
+        taskNAME.style.minHeight = '430px'
+        taskNAME.style.border = '2px solid #a0a0a0'
+        taskNAME.style.borderRadius = '10px'
+        taskNAME.style.padding = '10px 15px'
+        taskNAME.style.fontFamily = 'JetBrains Mono'
+        taskNAME.style.fontSize = '20px'
+
+        taskDESC.style.backgroundColor = '#a0a0a0'
+        taskDESC.style.border = '2px solid #a0a0a0'
+        taskDESC.style.padding = '5px 10px'
+        taskDESC.style.height = '85%'
+        taskDESC.style.maxHeight = '300px'
+        taskDESC.style.width = '100%'
+        taskDESC.style.margin = '2% auto 0 auto'
+        taskDESC.style.overflow = 'auto'
+        taskDESC.style.flexWrap = 'wrap'
+        taskDESC.style.whiteSpace = 'pre-wrap'
+        taskDESC.style.fontSize = '14px'
+
+        taskTIPO.style.backgroundColor = '#a0a0a0'
+        taskTIPO.style.border = '2px solid #a0a0a0'
+        taskTIPO.style.borderRadius = '10px'
+        taskTIPO.style.padding = '5px 10px'
+        taskTIPO.style.textAlign = 'center'
+
+        taskDELETE.innerText = 'Excluir'
+        taskDELETE.style.marginTop = '10px'
+
+        // Adiciona o elemento <div> à div de lista de tarefas
+        task_view.appendChild(taskNAME);
+        taskNAME.appendChild(taskDESC)
+        taskNAME.appendChild(taskTIPO)
+        taskNAME.appendChild(taskDELETE)
+        console.log(taskNAME.value)
+      });
+    }
+
+    function clearTasks() {
+      // Remove a chave 'tasks' do localStorage
+      localStorage.removeItem('tasks');
+
+      window.location.reload()
+
+      task_view.innerHTML = ''
+    }
+
+    displayTasks()
+  </script>
+</body>
+</html>
